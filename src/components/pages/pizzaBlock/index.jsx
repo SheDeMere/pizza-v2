@@ -1,7 +1,7 @@
 import React from 'react';
 
-function PizzaBlock({ imageUrl, title, price, category }) {
-  const types = ['тонкое', 'традиционное'];
+function PizzaBlock({ imageUrl, title, price, types }) {
+  const sortTypes = ['тонкое', 'традиционное'];
   const sizes = [26, 30, 30];
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
@@ -17,7 +17,7 @@ function PizzaBlock({ imageUrl, title, price, category }) {
                 key={type}
                 onClick={() => setActiveType(index)}
                 className={activeType === index ? 'active' : ''}>
-                {type}
+                {sortTypes[type]}
               </li>
             ))}
           </ul>

@@ -2,15 +2,32 @@ import React from 'react';
 import s from './Search.module.scss';
 import { setSearch } from '.././redux/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import debounce from 'lodash.debounce';
 
-const index = () => {
+const Index = () => {
   const dispatch = useDispatch();
-  const search = useSelector((state) => state.filter.searchPizza);
 
-  const searchPizza = (e) => {
-    dispatch(setSearch(e));
+  const [value, setValue] = React.useState('');
+
+  const inputRef = React.useRef();
+
+  const clearInput = () => {
+    setValue('');
+    dispatch(setSearch(''));
+    inputRef.current.focus();
   };
 
+  const updateSearchValue = React.useCallback(
+    debounce((str) => {
+      dispatch(setSearch(str));
+    }, 500),
+    [],
+  );
+
+  const onChangeInput = (event) => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
   return (
     <div className={s.root}>
       <svg className={s.icon} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -20,12 +37,13 @@ const index = () => {
         </g>
       </svg>
       <input
-        value={search}
-        onChange={(e) => searchPizza(e.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={(e) => onChangeInput(e)}
         placeholder="Поиск пиццы..."
       />
-      {search && (
-        <div onClick={() => dispatch(setSearch(''))}>
+      {value.length > 0 && (
+        <div onClick={clearInput}>
           <svg
             className={s.clear}
             height="48"
@@ -41,4 +59,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
