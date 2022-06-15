@@ -23,8 +23,9 @@ const Sort = () => {
   };
 
   React.useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.path.includes(sortRef)) {
+    const handleClickOutside = (e) => {
+      const path = e.path || (e.composedPath && e.composedPath())
+      if (path.includes(sortRef)) {
         console.log('бы клик вне области');
       }
     };
