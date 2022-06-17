@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSort } from './redux/filterSlice';
+import { selectSort, setSort } from './redux/filterSlice';
 
 export const sortList = [
   { name: 'популярности (DESC)', sortProperty: 'rating' },
@@ -13,9 +13,9 @@ export const sortList = [
 
 const Sort = () => {
   const dispatch = useDispatch();
-  const { sort } = useSelector((state) => state.filter);
-  const [open, setOpen] = React.useState(false);
+  const sort = useSelector(selectSort);
   const sortRef = React.useRef();
+  const [open, setOpen] = React.useState(false);
 
   const onClickSortActive = (obj) => {
     setOpen(false);
@@ -24,14 +24,16 @@ const Sort = () => {
 
   React.useEffect(() => {
     const handleClickOutside = (e) => {
-      const path = e.path || (e.composedPath && e.composedPath())
-      if (path.includes(sortRef)) {
-        console.log('бы клик вне области');
+      const path = e.path || (e.composedPath && e.composedPath());
+      if (!path.includes(sortRef.current)) {
+        setOpen(false);
       }
     };
     document.body.addEventListener('click', handleClickOutside);
+
     return () => document.body.removeEventListener('click', handleClickOutside);
   }, []);
+
   return (
     <div ref={sortRef} className="sort">
       <div className="sort__label">
