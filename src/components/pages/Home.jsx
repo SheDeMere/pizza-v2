@@ -7,7 +7,7 @@ import Paginate from '../pagination/';
 import qs from 'qs';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../redux/filterSlice';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { fetchPizzas, selectPizzaData } from '../redux/pizzaSlice';
 
 const Home = () => {
@@ -83,7 +83,7 @@ const Home = () => {
     isMounted.current = true;
   }, [categoryId, sort, currentPage]);
 
-  const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
+  const pizzas = items.map((item) => <PizzaBlock {...item} />);
   const preloader = [...new Array(4)].map((_, i) => <Skeleton key={i} />);
   return (
     <div>

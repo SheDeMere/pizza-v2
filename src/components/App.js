@@ -5,21 +5,19 @@ import '../scss/app.scss';
 import Home from './pages/Home';
 import { Routes, Route } from 'react-router-dom';
 import NotFound from './pages/notFound/NotFound';
+import FullPizza from "./pages/FullPizza";
+import Layout from "./layouts/Layout";
 
 const App = () => {
   return (
-    <div className="wrapper">
-      <Header />
-      <div className="content">
-        <div className="container">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="*" element={<NotFound />} />
+           <Route to='/' element={<Layout />}>
+               <Route path="" element={<Home />} />
+               <Route path="cart" element={<Cart />} />
+               <Route path="pizza/:id" element={<FullPizza />} />
+               <Route path="*" element={<NotFound />} />
+           </Route>
           </Routes>
-        </div>
-      </div>
-    </div>
   );
 };
 
