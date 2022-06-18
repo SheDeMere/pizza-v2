@@ -1,16 +1,16 @@
 import React from 'react';
-import Categories from '../Categories';
-import Sort, { sortList } from '../Sort';
-import PizzaBlock from '../pages/pizzaBlock/';
-import Skeleton from '../pages/pizzaBlock/Skeleton';
-import Paginate from '../pagination/';
+import Categories from '../components/Categories';
+import Sort, { sortList } from '../components/Sort';
+import PizzaBlock from './pizzaBlock';
+import Skeleton from './pizzaBlock/Skeleton';
+import Pagination from '../components/pagination';
 import qs from 'qs';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../redux/filterSlice';
-import {Link, useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchPizzas, selectPizzaData } from '../redux/pizzaSlice';
 
-const Home = () => {
+const Home: React.FC = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -23,12 +23,12 @@ const Home = () => {
 
   const { categoryId, sort, searchValue, currentPage } = useSelector(selectFilter);
 
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setCategoryId(id));
   };
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number));
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
   };
 
   const getPizzas = () => {
@@ -37,6 +37,7 @@ const Home = () => {
     const order = `${sort.sortProperty.includes('-') ? 'asc' : 'desc'}`;
     const search = searchValue ? searchValue : '';
     dispatch(
+        // @ts-ignore
       fetchPizzas({
         sortBy,
         order,
@@ -50,6 +51,7 @@ const Home = () => {
   React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
+
       const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
 
       dispatch(
@@ -83,7 +85,7 @@ const Home = () => {
     isMounted.current = true;
   }, [categoryId, sort, currentPage]);
 
-  const pizzas = items.map((item) => <PizzaBlock {...item} />);
+  const pizzas = items.map((item: any) => <PizzaBlock key={item.id} {...item} />);
   const preloader = [...new Array(4)].map((_, i) => <Skeleton key={i} />);
   return (
     <div>
@@ -101,7 +103,7 @@ const Home = () => {
         <div className="content__items">{status === 'loading' ? preloader : pizzas}</div>
       )}
 
-      {status === 'success' && <Paginate currentPage={currentPage} onChangePage={onChangePage} />}
+      {status === 'success' && <Pagination currentPage={currentPage} onChangePage={onChangePage} />}
     </div>
   );
 };

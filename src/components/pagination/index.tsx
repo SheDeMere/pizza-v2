@@ -2,7 +2,12 @@ import React from 'react';
 import ReactPaginate from 'react-paginate';
 import s from './Pagination.module.scss';
 
-const Index = ({ currentPage, onChangePage }) => {
+type PaginationProps = {
+  currentPage: number;
+  onChangePage: (page: number) => void;
+}
+
+const Index: React.FC<PaginationProps> = ({ currentPage, onChangePage }) => {
   return (
     <ReactPaginate
       className={s.root}
@@ -13,7 +18,6 @@ const Index = ({ currentPage, onChangePage }) => {
       pageCount={3}
       forcePage={currentPage - 1}
       previousLabel="<"
-      renderOnZeroPageCount={null}
     />
   );
 };
