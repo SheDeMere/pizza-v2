@@ -1,44 +1,49 @@
-import React from 'react';
-import {useNavigate, useParams} from "react-router-dom";
+import React from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 type FullPizzaProps = {
-    imageUrl: string;
-    price: number;
-    title: string;
-}
+  imageUrl: string;
+  price: number;
+  title: string;
+};
 
 const FullPizza: React.FC = () => {
-    const { id } = useParams();
+  const { id } = useParams();
 
-    const [pizza, setPizza] = React.useState<FullPizzaProps>()
+  const [pizza, setPizza] = React.useState<FullPizzaProps>();
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    React.useEffect(() => {
-        async function fetchPizza() {
-            try {
-                const { data } = await axios.get('https://627bb319b54fe6ee008d303d.mockapi.io/items/' + id);
-                setPizza(data);
-            } catch (error) {
-                alert('Ошибка при получении пиццы!');
-                navigate('/');
-            }
-        }
-
-        fetchPizza()
-    }, [])
-
-    if (!pizza) {
-        return <h1>loading...</h1>
+  React.useEffect(() => {
+    async function fetchPizza() {
+      try {
+        const { data } = await axios.get(
+          "https://627bb319b54fe6ee008d303d.mockapi.io/items/" + id
+        );
+        setPizza(data);
+      } catch (error) {
+        alert("Ошибка при получении пиццы!");
+        navigate("/");
+      }
     }
-    return (
-        <div className='container'>
-            <img src={pizza.imageUrl} alt=""/>
-            <h2>{pizza.title}</h2>
-            <h4>{pizza.price} ₽</h4>
-        </div>
-    );
+
+    fetchPizza();
+  }, []);
+
+  if (!pizza) {
+    return <h1>loading...</h1>;
+  }
+  return (
+    <div className="container">
+      <img src={pizza.imageUrl} alt="" />
+      <h2>{pizza.title}</h2>
+      <h4>{pizza.price} ₽</h4>
+      <Link to={"/"}>
+        <button className="button button--outline button--add">Назад</button>
+      </Link>
+    </div>
+  );
 };
 
 export default FullPizza;
