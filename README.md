@@ -11,3 +11,11 @@
 - React Pagination (пагинация)
 - Lodash.Debounce
 - Code Splitting, React Loadable, useWhyDidYouUpdate
+
+✅ Приложение имеет:
+- Cортировку по всем критериям
+- Выбор категорий
+- Поиск пицц
+- адаптивную верстку
+- пагинацию
+- хранение пицц в корзине
